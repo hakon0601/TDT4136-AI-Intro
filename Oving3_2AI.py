@@ -7,13 +7,13 @@ F = G + H
 import math
 
 class Node:
-	def __init__(self, pos, h, g, wall, endPos, parent):
+	def __init__(self, pos, h, g, endPos, parent, nodeValue):
 		self.pos = pos
 		self.h = h
 		self.g = g
-		self.wall = wall
 		self.endPos = endPos
 		self.parent = parent
+		self.nodeValue = nodeValue
 
 def getPosOf(element):
 	for y in range(len(board)):
@@ -33,7 +33,7 @@ def printHs():
 		print(horizontalHs)
 
 def setupBoard():
-	fname = 'board-1-1.txt'
+	fname = 'board-2-1.txt'
 	with open(fname) as f:
 		board = f.read().splitlines()
 	return(board)
@@ -52,16 +52,10 @@ def createInitialNodes():
 			h = getManhattanH(x, y)
 			g = 10000 # TODO fix
 			parent = None
-			if (board[y][x] == "." or board[y][x] == "A"):
-				wall = False
-				endPos = False
-			elif (board[y][x] == "#"):
-				wall = True
-				endPos = False
-			else:
-				wall = False
-				endPos = True
-			horizontalNodeList.append(Node((x, y), h, g, wall, endPos, parent))
+			endPosBool = False
+			if (board[y][x] == "B"):
+				endPosBool = True
+			horizontalNodeList.append(Node((x, y), h, g, endPosBool, parent, getNodeValue(board[y][x])))
 		verticalNodeList.append(horizontalNodeList)
 	return verticalNodeList	
 
@@ -93,11 +87,26 @@ def setupChildrenOfNode(parentNode):
 	return None
 
 def reCheckNode(node, parentNode):
-	if (node.wall == False and (node not in closedList and node not in openList)): 
-			if ((parentNode.g + 1) < node.g):
-				node.parent = parentNode
-				node.g = 1 + parentNode.g
-			openList.append(node)
+	if (node not in closedList and node not in openList):
+		if ((parentNode.g + node.nodeValue) < node.g):
+			node.parent = parentNode
+			node.g = node.nodeValue + parentNode.g
+		openList.append(node)
+
+def getNodeValue(cellType):
+	if (cellType == "w"):
+		return 100
+	elif (cellType == "m"):
+		return 50
+	elif (cellType == "f"):
+		return 10
+	elif (cellType == "g"):
+		return 5
+	elif (cellType == "r"):
+		return 1
+	else: 
+		return 0
+		
 
 def getBestNodeInOpenList():
 	bestNode = openList[0]
@@ -121,17 +130,16 @@ board = setupBoard() # (y, x)
 startPos = getPosOf("A") # (x, y)
 endPos = getPosOf("B") # (x, y)
 node2dList = createInitialNodes() # (y, x)...
+
 startNode = node2dList[startPos[1]][startPos[0]]
 startNode.g = 0
-
-printBoard()
 
 closedList = []
 openList = []
 
 openList.append(startNode) #Adding the startnode to the closed list
 
-#printLists()
+printBoard()
 endNode = None
 
 while(True):
@@ -146,10 +154,12 @@ print("\n")
 
 # Altering and printing board. Comma represents the path
 node = endNode
+costSum = 0
 while (node.parent != None):
 	s = list(board[node.pos[1]])
 	s[node.pos[0]] = ","
 	board[node.pos[1]] = "".join(s)
+	costSum = costSum + node.nodeValue
 	node = node.parent
 
 s = list(board[endPos[1]])
@@ -157,6 +167,7 @@ s[endPos[0]] = "B"
 board[endPos[1]] = "".join(s)
 
 printBoard()
+print("Sum:" + str(costSum))
 
 
 

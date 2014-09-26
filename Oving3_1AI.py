@@ -15,7 +15,7 @@ class Node:
 		self.endPos = endPos
 		self.parent = parent
 
-#This function gets position of given ?
+#This function gets position of given element(start/stop)
 def getPosOf(element):
 	for y in range(len(board)):
 		for x in range(len(board[y])):
@@ -27,7 +27,7 @@ def printBoard():
 	for line in board:
 		print(line)
 
-#This prints 
+#This prints all the H-values. Help function, not used.
 def printHs():
 	for y in range(len(board)):
 		horizontalHs = []
@@ -35,7 +35,7 @@ def printHs():
 			horizontalHs.append(node2dList[y][x].h)
 		print(horizontalHs)
 
-#This sets up the board as it is given in the textfils
+#This sets up the board as it is given in the textfiles
 def setupBoard():
 	fname = 'board-1-1.txt'
 	with open(fname) as f:
@@ -47,7 +47,7 @@ def getManhattanH(x, y):
 	return abs(endPos[0] - x) + abs(endPos[1] - y)
 
 #def getEuclidianH(x, y):
-	#TODO easy later/not needed, we use manhattan distance instead
+	#TODO easy later/not needed, we only use manhattan distance 
 
 #This function creates all the initial nodes and puts it in a list system, depending on if its a wall, the start point, end point, or just open nodes.
 def createInitialNodes():
@@ -71,7 +71,7 @@ def createInitialNodes():
 		verticalNodeList.append(horizontalNodeList)
 	return verticalNodeList	
 
-#This funstion gives each node its children, on each side of the node
+#This funstion gives each node its children, on evry side of the node
 def setupChildrenOfNode(parentNode):
 	#sets up the children to the left(west)
 	if parentNode.pos[0] != 0: 

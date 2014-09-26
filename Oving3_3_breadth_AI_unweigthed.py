@@ -99,11 +99,8 @@ def reCheckNode(node, parentNode):
 			openList.append(node)
 
 def getBestNodeInOpenList():
-	bestNode = openList[0]
-	for node in openList:
-		if (node.g + node.h) < (bestNode.g + bestNode.h):
-			bestNode = node
-	return bestNode
+	return openList[0]
+	
 
 def printLists():
 	oListPos = []
@@ -114,7 +111,6 @@ def printLists():
 	for poss in closedList:
 		cListPos.append(poss.pos)
 	print(cListPos)
-
 
 fname = 'board-1-1.txt'
 board = setupBoard(fname) # (y, x)
@@ -163,8 +159,6 @@ f = open('answerFile.txt','w')
 for line in board:
 	f.write(line + '\n')
 f.close()
-
-
 
 
 

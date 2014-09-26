@@ -32,14 +32,13 @@ def printHs():
 			horizontalHs.append(node2dList[y][x].h)
 		print(horizontalHs)
 
-def setupBoard():
-	fname = 'board-2-1.txt'
+def setupBoard(fname):
 	with open(fname) as f:
 		board = f.read().splitlines()
 	return(board)
 
 def getManhattanH(x, y):
-	return abs(endPos[0] - x) + abs(endPos[1] - y)
+	return abs((endPos[0] - x) + abs(endPos[1] - y))
 
 #def getEuclidianH(x, y):
 	#TODO easy later
@@ -125,8 +124,21 @@ def printLists():
 		cListPos.append(poss.pos)
 	print(cListPos)
 
+def alterBoardXO():
+	for openNode in openList:
+		s = list(board[openNode.pos[1]])
+		s[openNode.pos[0]] = "o"
+		board[openNode.pos[1]] = "".join(s)
 
-board = setupBoard() # (y, x)
+	for closedNode in closedList:
+		s = list(board[closedNode.pos[1]])
+		s[closedNode.pos[0]] = "x"
+		board[closedNode.pos[1]] = "".join(s)
+
+
+
+fname = 'board-2-1.txt'
+board = setupBoard(fname) # (y, x)
 startPos = getPosOf("A") # (x, y)
 endPos = getPosOf("B") # (x, y)
 node2dList = createInitialNodes() # (y, x)...
@@ -152,6 +164,9 @@ while(True):
 
 print("\n")
 
+
+
+
 # Altering and printing board. Comma represents the path
 node = endNode
 costSum = 0
@@ -166,15 +181,17 @@ s = list(board[endPos[1]])
 s[endPos[0]] = "B"
 board[endPos[1]] = "".join(s)
 
+#alterBoardXO()
+
 printBoard()
 print("Sum:" + str(costSum))
 
 
 
-
-
-
-
+f = open('answerFile.txt','w')
+for line in board:
+	f.write(line + '\n')
+f.close()
 
 
 

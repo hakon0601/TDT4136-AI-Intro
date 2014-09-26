@@ -101,7 +101,7 @@ def reCheckNode(node, parentNode):
 def getBestNodeInOpenList():
 	bestNode = openList[0]
 	for node in openList:
-		if (node.g + node.h) < (bestNode.g + bestNode.h):
+		if (node.g) < (bestNode.g):
 			bestNode = node
 	return bestNode
 
@@ -163,11 +163,5 @@ f = open('answerFile.txt','w')
 for line in board:
 	f.write(line + '\n')
 f.close()
-
-
-
-
-
-
 
 

@@ -35,9 +35,13 @@ def printHs():
 			horizontalHs.append(node2dList[y][x].h)
 		print(horizontalHs)
 
+<<<<<<< HEAD
 #This sets up the board as it is given in the textfiles
 def setupBoard():
 	fname = 'board-1-1.txt'
+=======
+def setupBoard(fname):
+>>>>>>> origin/master
 	with open(fname) as f:
 		board = f.read().splitlines()
 	return(board)
@@ -129,8 +133,14 @@ def printLists():
 		cListPos.append(poss.pos)
 	print(cListPos)
 
+<<<<<<< HEAD
 #makes the board with all nodes
 board = setupBoard() # (y, x)
+=======
+
+fname = 'board-1-1.txt'
+board = setupBoard(fname) # (y, x)
+>>>>>>> origin/master
 startPos = getPosOf("A") # (x, y)
 endPos = getPosOf("B") # (x, y)
 node2dList = createInitialNodes() # (y, x)...
@@ -173,7 +183,10 @@ board[endPos[1]] = "".join(s)
 printBoard()
 
 
-
+f = open('answerFile.txt','w')
+for line in board:
+	f.write(line + '\n')
+f.close()
 
 
 

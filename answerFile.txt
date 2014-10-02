@@ -1,0 +1,10 @@
+ffffffffffgggrgggggggrggggfffffffrrfffff
+ffAffffffgggrrggggggrrggffffffffrrffffff
+ff,fffgggggrrggggggrrgggffffrrrrrfffffff
+gg,ggggggggrggggrrrrgggffffrrfffffffffff
+gg,,,,,,,,,,rrrrrgggggffffrrffffffffffff
+ggggrrggggg,ggggggggffffffrfffffffffffff
+gggrrgggggg,,ggggggffff,,,,,,fffffffffff
+ggrrgggffggg,,,,ggff,,,,frff,rrrrfffffff
+ggrggffffffffff,,,,,,ffffrff,fffrrffffff
+ggrgfffffffffffffffffffffrffBffffrrfffff

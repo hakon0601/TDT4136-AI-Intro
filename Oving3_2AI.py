@@ -156,7 +156,7 @@ def alterBoardXO():
 
 
 
-fname = 'board-2-2.txt'
+fname = 'board-2-4.txt'
 board = setupBoard(fname) # (y, x)
 #>>>>>>> origin/master
 startPos = getPosOf("A") # (x, y)

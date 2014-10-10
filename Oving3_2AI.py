@@ -15,16 +15,19 @@ class Node:
 		self.parent = parent
 		self.nodeValue = nodeValue
 
+#This function get the position of given element(start/stop)
 def getPosOf(element):
 	for y in range(len(board)):
 		for x in range(len(board[y])):
 			if (board[y][x] == element):
 				return (x, y)
 
+#This prints a board at a given time
 def printBoard():
 	for line in board:
 		print(line)
 
+#This prints all the H-values. Help function, not used.
 def printHs():
 	for y in range(len(board)):
 		horizontalHs = []
@@ -32,17 +35,25 @@ def printHs():
 			horizontalHs.append(node2dList[y][x].h)
 		print(horizontalHs)
 
+#<<<<<<< HEAD
+#This sets up the board as it is given in the textfiles
+def setupBoard():
+	fname = 'board-2-2.txt'
+#=======
 def setupBoard(fname):
+#>>>>>>> origin/master
 	with open(fname) as f:
 		board = f.read().splitlines()
 	return(board)
 
+#This function computes the Manhattan distance from A to B
 def getManhattanH(x, y):
 	return abs((endPos[0] - x) + abs(endPos[1] - y))
 
 #def getEuclidianH(x, y):
-	#TODO easy later
+	#TODO easy later/not needed, we only use the manhattan distance
 
+#This function creates all the inital nodes and puts it in a list system, depending on what kind of element it is
 def createInitialNodes():
 	verticalNodeList = [] 
 	for y in range(len(board)):
@@ -59,6 +70,7 @@ def createInitialNodes():
 	return verticalNodeList	
 
 
+#This function gives each node its children, on every side of the node
 def setupChildrenOfNode(parentNode):
 	if parentNode.pos[0] != 0: 
 		westNode = node2dList[parentNode.pos[1]][parentNode.pos[0] - 1]
@@ -85,6 +97,7 @@ def setupChildrenOfNode(parentNode):
 			return (eastNode)
 	return None
 
+#checks node that hasent been discovered yet and adds it in openlist
 def reCheckNode(node, parentNode):
 	if (node not in closedList and node not in openList):
 		if ((parentNode.g + node.nodeValue) < node.g):
@@ -92,6 +105,7 @@ def reCheckNode(node, parentNode):
 			node.g = node.nodeValue + parentNode.g
 		openList.append(node)
 
+#gets the value of the node depending on what type it is
 def getNodeValue(cellType):
 	if (cellType == "w"):
 		return 100
@@ -106,7 +120,7 @@ def getNodeValue(cellType):
 	else: 
 		return 0
 		
-
+#Goes through all discovered nodes and pickst the one with lowest cost.
 def getBestNodeInOpenList():
 	bestNode = openList[0]
 	for node in openList:
@@ -114,6 +128,7 @@ def getBestNodeInOpenList():
 			bestNode = node
 	return bestNode
 
+#Prints the open and closed list we made
 def printLists():
 	oListPos = []
 	for pos in openList:
@@ -124,6 +139,10 @@ def printLists():
 		cListPos.append(poss.pos)
 	print(cListPos)
 
+#<<<<<<< HEAD
+#makes the board with all nodes
+board = setupBoard('board-2-1.txt') # (y, x)
+#=======
 def alterBoardXO():
 	for openNode in openList:
 		s = list(board[openNode.pos[1]])
@@ -137,8 +156,9 @@ def alterBoardXO():
 
 
 
-fname = 'board-2-1.txt'
+fname = 'board-2-4.txt'
 board = setupBoard(fname) # (y, x)
+#>>>>>>> origin/master
 startPos = getPosOf("A") # (x, y)
 endPos = getPosOf("B") # (x, y)
 node2dList = createInitialNodes() # (y, x)...

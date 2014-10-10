@@ -121,7 +121,7 @@ def printLists():
 	print(cListPos)
 
 
-fname = 'board-2-1.txt'
+fname = 'board-2-4.txt'
 board = setupBoard(fname) # (y, x)
 startPos = getPosOf("A") # (x, y)
 endPos = getPosOf("B") # (x, y)

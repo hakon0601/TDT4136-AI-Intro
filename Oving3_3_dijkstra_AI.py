@@ -135,7 +135,7 @@ def alterBoardXO():
 		s[closedNode.pos[0]] = "x"
 		board[closedNode.pos[1]] = "".join(s)
 
-fname = 'board-2-1.txt'
+fname = 'board-2-4.txt'
 board = setupBoard(fname) # (y, x)
 startPos = getPosOf("A") # (x, y)
 endPos = getPosOf("B") # (x, y)

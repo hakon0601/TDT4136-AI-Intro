@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b8d823d4-0555-4625-bc72-a5de3bdb3fbb" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Oving4_1AI.py" afterPath="$PROJECT_DIR$/Oving4_1AI.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="AI.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -32,8 +31,8 @@
       <file leaf-file-name="Oving4_1AI.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Oving4_1AI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.038179" vertical-offset="4963" max-vertical-offset="5797">
-              <caret line="10" column="50" selection-start-line="10" selection-start-column="50" selection-end-line="10" selection-end-column="50" />
+            <state vertical-scroll-proportion="0.5506608" vertical-offset="5116" max-vertical-offset="5831">
+              <caret line="323" column="12" selection-start-line="323" selection-start-column="12" selection-end-line="323" selection-end-column="12" />
               <folding>
                 <element signature="e#0#36#0" expanded="true" />
               </folding>
@@ -439,8 +438,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Oving4_1AI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.038179" vertical-offset="4963" max-vertical-offset="5797">
-          <caret line="10" column="50" selection-start-line="10" selection-start-column="50" selection-end-line="10" selection-end-column="50" />
+        <state vertical-scroll-proportion="0.5506608" vertical-offset="5116" max-vertical-offset="5831">
+          <caret line="323" column="12" selection-start-line="323" selection-start-column="12" selection-end-line="323" selection-end-column="12" />
           <folding>
             <element signature="e#0#36#0" expanded="true" />
           </folding>

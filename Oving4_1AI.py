@@ -268,7 +268,7 @@ def get_neighbour_new_method(conflict_node):
 def get_conflict_node():
     most_conflicted_node = nodes[0][0]
     for y in range(n):
-        for x in range(x):
+        for x in range(m):
             if nodes[y][x].is_filled and len(nodes[y][x].in_line_with_list) > len(most_conflicted_node.in_line_with_list):
                 most_conflicted_node = nodes[y][x]
     return most_conflicted_node
@@ -276,29 +276,31 @@ def get_conflict_node():
 
 
 def set_in_line_with_array(): # Have to partition this to make it more generic. Should be used to update lists when creating neighbour
-    for node1 in nodes:
-        node1.in_line_with_list = []
-        if node1.is_filled:
-            for node2 in nodes:
-                if node1 != node2:
-                    if node2.is_filled and (node1.pos_x == node2.pos_x or node1.pos_y == node2.pos_y):
-                        node1.in_line_with_list.append(node2)
+    for y in range(len(nodes)):
+        for node1 in nodes[y]:
+            node1.in_line_with_list = []
+            if node1.is_filled:
+                for q in range(len(nodes)):
+                    for node2 in nodes[q]:
+                        if node1 != node2:
+                            if node2.is_filled and (node1.pos_x == node2.pos_x or node1.pos_y == node2.pos_y):
+                                node1.in_line_with_list.append(node2)
 
-            stepsback = min(node1.pos_x, node1.pos_y)
-            x = node1.pos_x - stepsback
-            y = node1.pos_y - stepsback
-            diagonal_length = min(m - x, n - y)
-            for i in range(diagonal_length):
-                if node1 != nodes[y + i][x + i] and nodes[y + i][x + i].is_filled:
-                    node1.in_line_with_list.append(nodes[y + i][x + i])
+                stepsback = min(node1.pos_x, node1.pos_y)
+                x = node1.pos_x - stepsback
+                y = node1.pos_y - stepsback
+                diagonal_length = min(m - x, n - y)
+                for i in range(diagonal_length):
+                    if node1 != nodes[y + i][x + i] and nodes[y + i][x + i].is_filled:
+                        node1.in_line_with_list.append(nodes[y + i][x + i])
 
-            stepsback = min(node1.pos_x, n-node1.pos_y-1) # double check the -1...
-            x = node1.pos_x - stepsback
-            y = node1.pos_y + stepsback
-            diagonal_length = min(m - x, y)
-            for i in range(diagonal_length):
-                if node1 != nodes[y - i][x + i] and nodes[y - i][x + i].is_filled:
-                    node1.in_line_with_list.append(nodes[y - i][x + i])
+                stepsback = min(node1.pos_x, n-node1.pos_y-1) # double check the -1...
+                x = node1.pos_x - stepsback
+                y = node1.pos_y + stepsback
+                diagonal_length = min(m - x, y)
+                for i in range(diagonal_length):
+                    if node1 != nodes[y - i][x + i] and nodes[y - i][x + i].is_filled:
+                        node1.in_line_with_list.append(nodes[y - i][x + i])
 
 
 

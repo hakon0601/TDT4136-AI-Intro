@@ -1,4 +1,6 @@
-
+from random import randrange, random
+from math import exp
+from copy import deepcopy
 
 def set_up_board():
 	board = []
@@ -35,7 +37,7 @@ def get_score_horizontal_and_vertical(boardToCalculate):
 		for j in range(n):
 			if (boardToCalculate[i][j] == 1):
 				scoreHorizontal += 1
-			if (boardToCalculate[j][i] == 1):  # not wirking when m != n
+			if (boardToCalculate[j][i] == 1):  # not working when m != n
 				scoreVertical += 1
 		invalid_score += (max(scoreHorizontal - k, 0) + max(scoreVertical - k, 0))
 	return invalid_score
@@ -64,7 +66,7 @@ def checkDiagonalsLeftTopToBotRightLeftEdge(boardToCalculate):
 			borderX = 0
 			borderY = i
 			while (borderX < n and borderY < m):
-				if (board[borderY][borderX] == 1):
+				if (currBoard[borderY][borderX] == 1):
 					topLeftToDownRightFromLeftEdge += 1
 				borderX += 1
 				borderY += 1
@@ -79,7 +81,7 @@ def checkDiagonalsLeftBotToRightTopBotEdge(boardToCalculate):
 			borderX = i
 			borderY = n - 1
 			while (borderX < n and borderY < m):
-				if (board[borderY][borderX] == 1):
+				if (currBoard[borderY][borderX] == 1):
 					botLeftToTopRightFromBotEdge += 1
 				borderX += 1
 				borderY -= 1
@@ -93,13 +95,42 @@ def checkDiagonalsLeftBotToTopRightLeftEdge(boardToCalculate):
 		borderX = 0
 		borderY = i
 		while (borderX < n and borderY >= 0):
-			if (board[borderY][borderX] == 1):
+			if (currBoard[borderY][borderX] == 1):
 				botLeftToTopRightFromLeftEdge += 1
 			borderX += 1
 			borderY -= 1
 		totScore += max(botLeftToTopRightFromLeftEdge - k, 0)
 	return totScore
 
+def getListOfNeighbours(currBoard):
+	listOfNeighbours = []
+	for x in range(m):
+		newNeighbour = deepcopy(currBoard)
+		for y in range(n):
+			newNeighbour[y][x] = 0
+		placedEggs = 0
+		while placedEggs < k:
+			randy = randrange(n)
+			if newNeighbour[randy][x] == 0:
+				newNeighbour[randy][x] = 1
+				placedEggs += 1
+		listOfNeighbours.append(newNeighbour)
+	return listOfNeighbours
+	
+
+
+def getPrettyGoodNeighbour(currBoard):
+	listOfNeighbours = getListOfNeighbours(currBoard)
+	listOfBestNeighbours = []
+	listOfBestNeighbours.append(listOfNeighbours[0])
+	for i in range(1, len(listOfNeighbours)):
+		if get_score(listOfNeighbours[i]) > get_score(listOfBestNeighbours[0]):
+			listOfBestNeighbours = []
+			listOfBestNeighbours.append(listOfNeighbours[i])
+		elif get_score(listOfNeighbours[i]) == get_score(listOfBestNeighbours[0]):
+			listOfBestNeighbours.append(listOfNeighbours[i])
+	newBoard = listOfBestNeighbours[randrange(len(listOfBestNeighbours))]
+	return newBoard
 
 
 m = int(input("M value: "))
@@ -110,19 +141,22 @@ bestscore = min(m, n) * k
 temperature = 3000 # anything high?
 temperature_decay = 1
 
-board = set_up_board()
-print_board(board)
+startBoard = set_up_board()
+currBoard = startBoard
+print_board(currBoard)
 
-score = get_score(board)
+getListOfNeighbours(currBoard)
+
+score = get_score(currBoard)
 while (score < 100 and temperature > 0):
-    neighbour = getPrettyGoodNeighbour(bestBoard, 10) #this is the problem, should pick a better neighbour with higher score
+    neighbour = getPrettyGoodNeighbour(currBoard) #this is the problem, should pick a better neighbour with higher score
     neighbourScore = get_score(neighbour)
     if (score < neighbourScore): # take temp into consideration
-        board = neighbour
+        currBoard = neighbour
     elif (exp(score - neighbourScore / temperature) < random()): # is true more frequently when temperature is high
-        board = neighbour
+        currBoard = neighbour
     temperature -= temperature_decay
-    score = getScore(board)
-    if(getScore(bestBoard) < neighbourScore):
-        bestBoard = neighbour
-printBoard(bestBoard)
+    score = get_score(currBoard)
+    if(get_score(currBoard) < neighbourScore):
+        currBoard = neighbour
+print_board(currBoard)

@@ -22,8 +22,11 @@ def get_score(board_to_calc):
 	invalid_score += get_score_horizontal_and_vertical(board_to_calc)
 	invalid_score += checkDiagonalsLeftTopToBotRightTopEdge(board_to_calc)
 	invalid_score += checkDiagonalsLeftTopToBotRightLeftEdge(board_to_calc)
-	invalid_score += checkDiagonalsLeftBotToRightTopBotEdge(board_to_calc)
-	invalid_score += checkDiagonalsLeftBotToTopRightLeftEdge(board_to_calc)
+	rotated_board_to_calc = [list(a) for a in zip(*board_to_calc[::-1])]
+	invalid_score += checkDiagonalsLeftTopToBotRightTopEdge(rotated_board_to_calc)
+	invalid_score += checkDiagonalsLeftTopToBotRightLeftEdge(rotated_board_to_calc)
+	#invalid_score += checkDiagonalsLeftBotToRightTopBotEdge(board_to_calc)
+	#invalid_score += checkDiagonalsLeftBotToTopRightLeftEdge(board_to_calc)
 	return maxScore - invalid_score
 
 

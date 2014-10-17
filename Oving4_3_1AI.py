@@ -1,5 +1,6 @@
 from random import randrange, random
 from math import exp
+from copy import deepcopy
 
 def set_up_board():
 	board = []
@@ -101,15 +102,34 @@ def checkDiagonalsLeftBotToTopRightLeftEdge(boardToCalculate):
 		totScore += max(botLeftToTopRightFromLeftEdge - k, 0)
 	return totScore
 
-def getPrettyGoodNeighbour(currBoard, numberofNewBoards):
-	newBoard = currBoard
-	for y in range(n):
-		for x in range(m):
-			if currBoard[y][x] == 1:
-				randy = randrange(m)
-				newBoard[y][x] = 0
-				newBoard[randy][x] = 1
+def getListOfNeighbours(currBoard):
+	listOfNeighbours = []
+	for x in range(m):
+		newNeighbour = deepcopy(currBoard)
+		for y in range(n):
+			newNeighbour[y][x] = 0
+		placedEggs = 0
+		while placedEggs < k:
+			randy = randrange(n)
+			if newNeighbour[randy][x] == 0:
+				newNeighbour[randy][x] = 1
+				placedEggs += 1
+		listOfNeighbours.append(newNeighbour)
+	return listOfNeighbours
+	
 
+
+def getPrettyGoodNeighbour(currBoard):
+	listOfNeighbours = getListOfNeighbours(currBoard)
+	listOfBestNeighbours = []
+	listOfBestNeighbours.append(listOfNeighbours[0])
+	for i in range(1, len(listOfNeighbours)):
+		if get_score(listOfNeighbours[i]) > get_score(listOfBestNeighbours[0]):
+			listOfBestNeighbours = []
+			listOfBestNeighbours.append(listOfNeighbours[i])
+		elif get_score(listOfNeighbours[i]) == get_score(listOfBestNeighbours[0]):
+			listOfBestNeighbours.append(listOfNeighbours[i])
+	newBoard = listOfBestNeighbours[randrange(len(listOfBestNeighbours))]
 	return newBoard
 
 
@@ -125,9 +145,11 @@ startBoard = set_up_board()
 currBoard = startBoard
 print_board(currBoard)
 
+getListOfNeighbours(currBoard)
+
 score = get_score(currBoard)
 while (score < 100 and temperature > 0):
-    neighbour = getPrettyGoodNeighbour(currBoard, 10) #this is the problem, should pick a better neighbour with higher score
+    neighbour = getPrettyGoodNeighbour(currBoard) #this is the problem, should pick a better neighbour with higher score
     neighbourScore = get_score(neighbour)
     if (score < neighbourScore): # take temp into consideration
         currBoard = neighbour

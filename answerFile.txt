@@ -1,10 +1,4 @@
-wwwwwggggggggggggg,,,,,,,,,,,,,,,,grrrrr
-wwwwwwwgggggggggg,,gggggggggwwwww,,rgggg
-wwwwwwwwwwwgggA,,,ggggwwwwwwwwwwww,wgggg
-wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww,wwwww
-wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww,wwwww
-wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww,,wwwww
-wwwwwwwwgggggBgggggwwwwwwwwwwwwww,wwwwww
-wwwwggggggfff,ffgggggggggwwwwwwww,wwwwww
-wwggggfffffff,ffffffgggggggggggg,,gwwwww
-wgggfffrrrrrr,,,,,,,,,,,,,,,,,,,,ggggggg
+[1, 0, 0, 0]
+[0, 0, 0, 1]
+[0, 1, 0, 0]
+[0, 0, 1, 0]

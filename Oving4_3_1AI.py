@@ -76,35 +76,6 @@ def checkDiagonalsLeftTopToBotRightLeftEdge(boardToCalculate):
 			totScore += max(topLeftToDownRightFromLeftEdge - k, 0)
 	return totScore
 
-def checkDiagonalsLeftBotToRightTopBotEdge(boardToCalculate):
-	totScore = 0
-	for i in range(n):
-		botLeftToTopRightFromBotEdge = 0
-		if (n - i > k):
-			borderX = i
-			borderY = n - 1
-			while (borderX < n and borderY < m):
-				if (currBoard[borderY][borderX] == 1):
-					botLeftToTopRightFromBotEdge += 1
-				borderX += 1
-				borderY -= 1
-			totScore += max(botLeftToTopRightFromBotEdge - k, 0)
-	return totScore
-
-def checkDiagonalsLeftBotToTopRightLeftEdge(boardToCalculate):
-	totScore = 0
-	for i in range(k, m - 1):
-		botLeftToTopRightFromLeftEdge = 0
-		borderX = 0
-		borderY = i
-		while (borderX < n and borderY >= 0):
-			if (currBoard[borderY][borderX] == 1):
-				botLeftToTopRightFromLeftEdge += 1
-			borderX += 1
-			borderY -= 1
-		totScore += max(botLeftToTopRightFromLeftEdge - k, 0)
-	return totScore
-
 def getListOfNeighbours(currBoard):
 	listOfNeighbours = []
 	for x in range(m):
@@ -141,17 +112,18 @@ n = int(input("N value: "))
 k = int(input("K value: "))
 maxScore = 100
 bestscore = min(m, n) * k
-temperature = 3000 # anything high?
-temperature_decay = 1
+temperature = 1 # anything high?
+temperature_decay = 0.001
 
 startBoard = set_up_board()
 currBoard = startBoard
+best_board = startBoard
 print_board(currBoard)
 
 getListOfNeighbours(currBoard)
 
 score = get_score(currBoard)
-while (score < 100 and temperature > 0):
+while (score < 100 and temperature > temperature_decay):
     neighbour = getPrettyGoodNeighbour(currBoard) #this is the problem, should pick a better neighbour with higher score
     neighbourScore = get_score(neighbour)
     if (score < neighbourScore): # take temp into consideration
@@ -160,6 +132,9 @@ while (score < 100 and temperature > 0):
         currBoard = neighbour
     temperature -= temperature_decay
     score = get_score(currBoard)
-    if(get_score(currBoard) < neighbourScore):
-        currBoard = neighbour
-print_board(currBoard)
+    if(get_score(best_board) < score):
+        best_board = neighbour
+print_board(best_board)
+
+
+		

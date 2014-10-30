@@ -84,7 +84,7 @@ class CSP:
         self.inference(assignment, self.get_all_arcs())
 
         # Call backtrack with the partial assignment 'assignment'(return self.domains if you dont have the backtrack code, return self.backtrack(assignment) if you have it=
-        return self.backtrack(assignment)
+        return self.domains
 
     def backtrack(self, assignment):
         """The function 'Backtrack' from the pseudocode in the
@@ -163,9 +163,9 @@ class CSP:
         """
         # TODO: IMPLEMENT THIS (Think it is working now)
         
-        queue = queue
+        queue = copy.deepcopy(queue)
 
-        while queue > 0:
+        while len(queue) > 0:
             first_arc = queue.pop(0)
             i, j = first_arc
             if self.revise(assignment, i, j):
@@ -175,9 +175,6 @@ class CSP:
                 for arc in self.get_all_neighboring_arcs(i):
                     if arc != (j, i) and arc not in queue:
                         queue.append(arc)
-
-        return True
-        
 
     def revise(self, assignment, i, j):
         """The function 'Revise' from the pseudocode in the textbook.
@@ -198,18 +195,15 @@ class CSP:
         # TODO: IMPLEMENT THIS - Not working???
               
         revised = False
-        for number in self.domains[i]:
-            isokay = False
-            for constraint in self.constraints[i][j]:
-                if number == constraint[0]:
-                    isokay = True
-
-            if not isokay:
-                if str(number) in self.domains[i]: 
-
-                    self.domains[i].remove(str(number))
-                    revised = True
-
+        for k in assignment[i]:
+            keep = False
+            for l in assignment[j]:
+                if (k, l) in self.constraints[i][j]:
+                    keep = True
+            if not keep:
+                assignment[i].remove(k)
+                self.domains[i].remove(k)
+                revised = True
         return revised
 
 def create_map_coloring_csp():
@@ -271,10 +265,10 @@ def print_sudoku_solution(solution):
         if row == 2 or row == 5:
             print '------+-------+------'
 
-board = create_sudoku_csp('easy.txt')
-#sol = board.backtracking_search()
+board = create_sudoku_csp("sudokus/medium.txt")
+sol = board.backtracking_search()
 
-#print_sudoku_solution(sol)
+print_sudoku_solution(sol)
 #print sol
 
 

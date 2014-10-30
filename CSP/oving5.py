@@ -84,7 +84,7 @@ class CSP:
         self.inference(assignment, self.get_all_arcs())
 
         # Call backtrack with the partial assignment 'assignment'(return self.domains if you dont have the backtrack code, return self.backtrack(assignment) if you have it=
-        return self.domains
+        return self.backtrack(assignment)
 
     def backtrack(self, assignment):
         """The function 'Backtrack' from the pseudocode in the
@@ -128,11 +128,24 @@ class CSP:
                 remove {var = value} and inferences from assignment
             return failure
         """
-        # TODO: IMPLEMENT THIS
+        if self.assignment_is_complete(assignment):
+            return assignment
+        unassigned_name = self.select_unassigned_variable(assignment)
+        for value in assignment[unassigned_name]:
+            assignment_copy = copy.deepcopy(assignment)
+            assignment_copy[unassigned_name] = [value]
+            interferences = self.inference(assignment_copy, self.get_all_arcs())
+            if interferences:
+                result = self.backtrack(assignment_copy)
+                if result:
+                    return result
+        return None
 
-
-        pass
-
+    def assignment_is_complete(self, assignment):
+        for name in assignment.keys():
+            if len(assignment[name]) is not 1:
+                return False
+        return True
 
     def select_unassigned_variable(self, assignment):
         """The function 'Select-Unassigned-Variable' from the pseudocode
@@ -140,8 +153,11 @@ class CSP:
         in 'assignment' that have not yet been decided, i.e. whose list
         of legal values has a length greater than one.
         """
-        # TODO: IMPLEMENT THIS
-        pass
+        best_name_and_length = (None, 10)
+        for name in assignment.keys():
+            if len(assignment[name]) < best_name_and_length[1] and len(assignment[name]) is not 1:
+                best_name_and_length = (name, len(assignment[name]))
+        return best_name_and_length[0]
 
     def inference(self, assignment, queue):
         """The function 'AC-3' from the pseudocode in the textbook.
@@ -161,8 +177,6 @@ class CSP:
                         add (Xk, Xi) to queue
             return true
         """
-        # TODO: IMPLEMENT THIS (Think it is working now)
-        
         queue = copy.deepcopy(queue)
 
         while len(queue) > 0:
@@ -170,11 +184,11 @@ class CSP:
             i, j = first_arc
             if self.revise(assignment, i, j):
                 if len(self.domains[i]) == 0:
-                    print 'no good'
                     return False
                 for arc in self.get_all_neighboring_arcs(i):
                     if arc != (j, i) and arc not in queue:
                         queue.append(arc)
+        return True
 
     def revise(self, assignment, i, j):
         """The function 'Revise' from the pseudocode in the textbook.
@@ -192,8 +206,6 @@ class CSP:
                     revised ← true
             return revised
         """
-        # TODO: IMPLEMENT THIS - Not working???
-              
         revised = False
         for k in assignment[i]:
             keep = False
@@ -202,7 +214,6 @@ class CSP:
                     keep = True
             if not keep:
                 assignment[i].remove(k)
-                self.domains[i].remove(k)
                 revised = True
         return revised
 
@@ -265,39 +276,9 @@ def print_sudoku_solution(solution):
         if row == 2 or row == 5:
             print '------+-------+------'
 
-board = create_sudoku_csp("sudokus/medium.txt")
-sol = board.backtracking_search()
-
-print_sudoku_solution(sol)
-#print sol
-
-
-
-
-
-
-all_arcs = board.get_all_arcs()
-#print all_arcs
-#first_arc = all_arcs.pop(0)
-#firsttup = first_arc[0]
-#Xi, Xj = first_arc
-#print all_arcs
-#print first_arc
-#print Xi, Xj
-#dom = board.domains[Xi]
-#print dom
-
-#for number in dom:
-#    print number
-
-#number = 3
-#dom.remove(str(number))
-#print dom
-
-#con = board.constraints[Xi][Xj]
-#print con
-
-#for constraint in con:
-#    print constraint
-#    first_c = constraint[0]
-#    print first_c
+board_names = ["sudokus/easy.txt", "sudokus/medium.txt", "sudokus/hard.txt", "sudokus/veryhard.txt"]
+for filename in board_names:
+    board = create_sudoku_csp(filename)
+    sol = board.backtracking_search()
+    print_sudoku_solution(sol)
+    print "\n"

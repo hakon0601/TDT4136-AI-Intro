@@ -83,7 +83,7 @@ class CSP:
         # values that are not arc-consistent to begin with
         self.inference(assignment, self.get_all_arcs())
 
-        # Call backtrack with the partial assignment 'assignment'(return self.domains if you dont have the backtrack code)
+        # Call backtrack with the partial assignment 'assignment'(return self.domains if you dont have the backtrack code, return self.backtrack(assignment) if you have it=
         return self.backtrack(assignment)
 
     def backtrack(self, assignment):
@@ -129,6 +129,8 @@ class CSP:
             return failure
         """
         # TODO: IMPLEMENT THIS
+
+
         pass
 
 
@@ -159,19 +161,23 @@ class CSP:
                         add (Xk, Xi) to queue
             return true
         """
-        # TODO: IMPLEMENT THIS
+        # TODO: IMPLEMENT THIS (Think it is working now)
+        
         queue = queue
 
         while queue > 0:
             first_arc = queue.pop(0)
             i, j = first_arc
-            if revise(assignment, i, j):
-                if len(assignment.domains[i]) == 0:
+            if self.revise(assignment, i, j):
+                if len(self.domains[i]) == 0:
+                    print 'no good'
                     return False
-                for arc in assignment.get_all_neighboring_arcs(i):
-                    if arc != (j, i):
+                for arc in self.get_all_neighboring_arcs(i):
+                    if arc != (j, i) and arc not in queue:
                         queue.append(arc)
+
         return True
+        
 
     def revise(self, assignment, i, j):
         """The function 'Revise' from the pseudocode in the textbook.
@@ -189,17 +195,22 @@ class CSP:
                     revised ← true
             return revised
         """
-        # TODO: IMPLEMENT THIS
+        # TODO: IMPLEMENT THIS - Not working???
+              
+        revised = False
+        for number in self.domains[i]:
+            isokay = False
+            for constraint in self.constraints[i][j]:
+                if number == constraint[0]:
+                    isokay = True
 
-        """revised = false
-            for x in range(i):
-                if: 
-                    i.pop
-                    revised = true
-                pass
+            if not isokay:
+                if str(number) in self.domains[i]: 
 
-        return revised"""
-        return True
+                    self.domains[i].remove(str(number))
+                    revised = True
+
+        return revised
 
 def create_map_coloring_csp():
     """Instantiate a CSP representing the map coloring problem from the
@@ -261,3 +272,38 @@ def print_sudoku_solution(solution):
             print '------+-------+------'
 
 board = create_sudoku_csp('easy.txt')
+#sol = board.backtracking_search()
+
+#print_sudoku_solution(sol)
+#print sol
+
+
+
+
+
+
+all_arcs = board.get_all_arcs()
+#print all_arcs
+#first_arc = all_arcs.pop(0)
+#firsttup = first_arc[0]
+#Xi, Xj = first_arc
+#print all_arcs
+#print first_arc
+#print Xi, Xj
+#dom = board.domains[Xi]
+#print dom
+
+#for number in dom:
+#    print number
+
+#number = 3
+#dom.remove(str(number))
+#print dom
+
+#con = board.constraints[Xi][Xj]
+#print con
+
+#for constraint in con:
+#    print constraint
+#    first_c = constraint[0]
+#    print first_c

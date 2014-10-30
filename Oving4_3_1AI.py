@@ -2,6 +2,7 @@ from random import randrange, random
 from math import exp
 from copy import deepcopy
 
+#sets up first board with egges in the k first rows
 def set_up_board():
 	board = []
 	for y in range(n):
@@ -14,11 +15,13 @@ def set_up_board():
 		board.append(horizontalArray)
 	return board
 
+#function to print board and score
 def print_board(board_to_print):
 	for y in range(m):
 		print(board_to_print[y])
 	print(get_score(board_to_print))
 
+#get scores depending on conflicts
 def get_score(board_to_calc):
 	invalid_score = 0
 	invalid_score += get_score_horizontal_and_vertical(board_to_calc)
@@ -31,7 +34,7 @@ def get_score(board_to_calc):
 	#invalid_score += checkDiagonalsLeftBotToTopRightLeftEdge(board_to_calc)
 	return maxScore - invalid_score
 
-
+#get scores in vertical an horizontal direction
 def get_score_horizontal_and_vertical(boardToCalculate):
 	invalid_score = 0
 	for i in range(m):
@@ -45,7 +48,7 @@ def get_score_horizontal_and_vertical(boardToCalculate):
 		invalid_score += (max(scoreHorizontal - k, 0) + max(scoreVertical - k, 0))
 	return invalid_score
 
-
+#get diagonal scores
 def checkDiagonalsLeftTopToBotRightTopEdge(boardToCalculate):
 	totScore = 0
 	for i in range(n):
@@ -61,6 +64,7 @@ def checkDiagonalsLeftTopToBotRightTopEdge(boardToCalculate):
 			totScore += max(topLeftToDownRightFromTopLine - k, 0)
 	return totScore
 
+#get diagonal scores
 def checkDiagonalsLeftTopToBotRightLeftEdge(boardToCalculate):
 	totScore = 0
 	for i in range(1, m):  # from 1 because (0, 0) already has been checked
@@ -76,6 +80,39 @@ def checkDiagonalsLeftTopToBotRightLeftEdge(boardToCalculate):
 			totScore += max(topLeftToDownRightFromLeftEdge - k, 0)
 	return totScore
 
+#get diagonal scores
+def checkDiagonalsLeftBotToRightTopBotEdge(boardToCalculate):
+	totScore = 0
+	for i in range(n):
+		botLeftToTopRightFromBotEdge = 0
+		if (n - i > k):
+			borderX = i
+			borderY = n - 1
+			while (borderX < n and borderY < m):
+				if (currBoard[borderY][borderX] == 1):
+					botLeftToTopRightFromBotEdge += 1
+				borderX += 1
+				borderY -= 1
+			totScore += max(botLeftToTopRightFromBotEdge - k, 0)
+	return totScore
+
+#get diagonal scores
+def checkDiagonalsLeftBotToTopRightLeftEdge(boardToCalculate):
+	totScore = 0
+	for i in range(k, m - 1):
+		botLeftToTopRightFromLeftEdge = 0
+		borderX = 0
+		borderY = i
+		while (borderX < n and borderY >= 0):
+			if (currBoard[borderY][borderX] == 1):
+				botLeftToTopRightFromLeftEdge += 1
+			borderX += 1
+			borderY -= 1
+		totScore += max(botLeftToTopRightFromLeftEdge - k, 0)
+	return totScore
+
+#generate different neghbours
+>>>>>>> 7edba316bd2ff41ea3aecf6add2240fa8b0849e3
 def getListOfNeighbours(currBoard):
 	listOfNeighbours = []
 	for x in range(m):
@@ -91,8 +128,7 @@ def getListOfNeighbours(currBoard):
 		listOfNeighbours.append(newNeighbour)
 	return listOfNeighbours
 	
-
-
+#pick out best neighbours
 def getPrettyGoodNeighbour(currBoard):
 	listOfNeighbours = getListOfNeighbours(currBoard)
 	listOfBestNeighbours = []
@@ -106,7 +142,7 @@ def getPrettyGoodNeighbour(currBoard):
 	newBoard = listOfBestNeighbours[randrange(len(listOfBestNeighbours))]
 	return newBoard
 
-
+#starts the algorithm with getting and setting values
 m = int(input("M value: "))
 n = int(input("N value: "))
 k = int(input("K value: "))
@@ -122,6 +158,7 @@ print_board(currBoard)
 
 getListOfNeighbours(currBoard)
 
+#general algorithm
 score = get_score(currBoard)
 while (score < 100 and temperature > temperature_decay):
     neighbour = getPrettyGoodNeighbour(currBoard) #this is the problem, should pick a better neighbour with higher score
@@ -132,9 +169,14 @@ while (score < 100 and temperature > temperature_decay):
         currBoard = neighbour
     temperature -= temperature_decay
     score = get_score(currBoard)
+
     if(get_score(best_board) < score):
         best_board = neighbour
 print_board(best_board)
 
+print_board(bestscore)
 
-		
+f = open('answerFile4.txt','w')
+for line in bestscore:
+	f.write("%s\n" % line)
+f.close()

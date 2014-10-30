@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import copy
 import itertools
@@ -82,7 +83,7 @@ class CSP:
         # values that are not arc-consistent to begin with
         self.inference(assignment, self.get_all_arcs())
 
-        # Call backtrack with the partial assignment 'assignment'
+        # Call backtrack with the partial assignment 'assignment'(return self.domains if you dont have the backtrack code)
         return self.backtrack(assignment)
 
     def backtrack(self, assignment):
@@ -108,9 +109,28 @@ class CSP:
         should have a clean slate and not see any traces of the old
         assignments and inferences that took place in previous
         iterations of the loop.
+
+        function BACKTRACKING-SEARCH(csp) returns a solution, or failure
+            return BACKTRACK({ }, csp)
+        
+        function BACKTRACK(assignment, csp) returns a solution, or failure
+            if assignment is complete then return assignment
+            var ← SELECT-UNASSIGNED-VARIABLE(csp)
+            for each value in ORDER-DOMAIN-VALUES(var , assignment, csp) do
+                if value is consistent with assignment then
+                    add {var = value} to assignment
+                    inferences ← INFERENCE(csp, var , value)
+                    if inferences ̸= failure then
+                        add inferences to assignment
+                        result ← BACKTRACK(assignment, csp)
+                        if result ̸= failure then
+                            return result
+                remove {var = value} and inferences from assignment
+            return failure
         """
         # TODO: IMPLEMENT THIS
         pass
+
 
     def select_unassigned_variable(self, assignment):
         """The function 'Select-Unassigned-Variable' from the pseudocode
@@ -126,9 +146,32 @@ class CSP:
         'assignment' is the current partial assignment, that contains
         the lists of legal values for each undecided variable. 'queue'
         is the initial queue of arcs that should be visited.
+        
+        function AC-3(csp) returns false if an inconsistency is found and true otherwise
+            inputs: csp, a binary CSP with components (X, D, C)
+            local variables: queue, a queue of arcs, initially all the arcs in csp
+        
+            while queue is not empty do
+                (Xi, Xj )← REMOVE-FIRST(queue)
+                if REVISE(csp, Xi, Xj ) then
+                    if size of Di = 0 then return false
+                    for each Xk in Xi.NEIGHBORS - {Xj} do
+                        add (Xk, Xi) to queue
+            return true
         """
         # TODO: IMPLEMENT THIS
-        pass
+        queue = queue
+
+        while queue > 0:
+            first_arc = queue.pop(0)
+            i, j = first_arc
+            if revise(assignment, i, j):
+                if len(assignment.domains[i]) == 0:
+                    return False
+                for arc in assignment.get_all_neighboring_arcs(i):
+                    if arc != (j, i):
+                        queue.append(arc)
+        return True
 
     def revise(self, assignment, i, j):
         """The function 'Revise' from the pseudocode in the textbook.
@@ -138,9 +181,25 @@ class CSP:
         found in variable i's domain that doesn't satisfy the constraint
         between i and j, the value should be deleted from i's list of
         legal values in 'assignment'.
+        function REVISE(csp, Xi, Xj ) returns true if we revise the domain of Xi
+            revised ← false
+            for each x in Di do
+                if no value y in Dj allows (x ,y) to satisfy the constraint between Xi and Xj then
+                    delete x from Di
+                    revised ← true
+            return revised
         """
         # TODO: IMPLEMENT THIS
-        pass
+
+        """revised = false
+            for x in range(i):
+                if: 
+                    i.pop
+                    revised = true
+                pass
+
+        return revised"""
+        return True
 
 def create_map_coloring_csp():
     """Instantiate a CSP representing the map coloring problem from the
@@ -200,3 +259,5 @@ def print_sudoku_solution(solution):
         print
         if row == 2 or row == 5:
             print '------+-------+------'
+
+board = create_sudoku_csp('easy.txt')
